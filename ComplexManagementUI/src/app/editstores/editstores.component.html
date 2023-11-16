@@ -1,0 +1,245 @@
+<form [formGroup]="editStoreForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex justify-content-center">
+    <h3>Edit Store</h3>
+  </div>
+  <h4>Store Details:</h4>
+  <!-- Store Name -->
+  <div class="container pb-3">
+    <label for="name">Store Name</label>
+    <input type="text" class="form-control" id="name" formControlName="name" />
+  </div>
+
+  <h4>Store Category Details:</h4>
+  <div class="container pb-3" formGroupName="category">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="categoryName">Category Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoryName"
+            formControlName="name"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="categoryDescription">Category Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoryDescription"
+            formControlName="description"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Lease Agreements:</h4>
+  <div formArrayName="leaseAgreements">
+    <div
+      *ngFor="let lease of leaseAgreements.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div class="container pb-3">
+        <div class="row">
+          <!-- Start Date -->
+          <div class="col">
+            <div class="form-group">
+              <label for="startDate{{ i }}">Start Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="startDate{{ i }}"
+                formControlName="startDate"
+              />
+            </div>
+          </div>
+          <!-- End Date -->
+          <div class="col">
+            <div class="form-group">
+              <label for="endDate{{ i }}">End Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="endDate{{ i }}"
+                formControlName="endDate"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Rent -->
+          <div class="col">
+            <div class="form-group">
+              <label for="rent{{ i }}">Rent</label>
+              <input
+                type="number"
+                class="form-control"
+                id="rent{{ i }}"
+                formControlName="rent"
+              />
+            </div>
+          </div>
+          <!-- Terms -->
+          <div class="col">
+            <div class="form-group">
+              <label for="terms{{ i }}">Terms</label>
+              <input
+                type="text"
+                class="form-control"
+                id="terms{{ i }}"
+                formControlName="terms"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Payments -->
+        <div formArrayName="payments">
+          <div
+            *ngFor="let payment of getPayments(lease).controls; let j = index"
+            [formGroupName]="j"
+          >
+            <div class="row">
+              <!-- Payment Date -->
+              <div class="col">
+                <div class="form-group">
+                  <label for="paymentDate{{ i }}_{{ j }}">Payment Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="paymentDate{{ i }}_{{ j }}"
+                    formControlName="date"
+                  />
+                </div>
+              </div>
+              <!-- Payment Amount -->
+              <div class="col">
+                <div class="form-group">
+                  <label for="paymentAmount{{ i }}_{{ j }}">Amount</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="paymentAmount{{ i }}_{{ j }}"
+                    formControlName="amount"
+                  />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="form-group">
+                  <label for="paymentType{{ i }}_{{ j }}">Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="paymentAmount{{ i }}_{{ j }}"
+                    formControlName="type"
+                  />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="form-group">
+                  <label for="paymentInvoiceno{{ i }}_{{ j }}"
+                    >Invoice No</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="paymentAmount{{ i }}_{{ j }}"
+                    formControlName="amount"
+                  />
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Maintenance Contracts:</h4>
+  <div formArrayName="maintenanceContracts">
+    <div
+      *ngFor="let contract of maintenanceContracts.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div class="container pb-3">
+        <div class="row">
+          <!-- Provider Name -->
+          <div class="col">
+            <div class="form-group">
+              <label for="providerName{{ i }}">Provider Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="providerName{{ i }}"
+                formControlName="providerName"
+              />
+            </div>
+          </div>
+          <!-- Start Date -->
+          <div class="col">
+            <div class="form-group">
+              <label for="startDate{{ i }}">Start Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="startDate{{ i }}"
+                formControlName="startDate"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- End Date -->
+          <div class="col">
+            <div class="form-group">
+              <label for="endDate{{ i }}">End Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="endDate{{ i }}"
+                formControlName="endDate"
+              />
+            </div>
+          </div>
+          <!-- Cost -->
+          <div class="col">
+            <div class="form-group">
+              <label for="cost{{ i }}">Cost</label>
+              <input
+                type="number"
+                class="form-control"
+                id="cost{{ i }}"
+                formControlName="cost"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- Details -->
+        <div class="form-group">
+          <label for="details{{ i }}">Details</label>
+          <textarea
+            class="form-control"
+            id="details{{ i }}"
+            formControlName="details"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+  </div>
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-primary">Update Store</button>
+  </div>
+</form>

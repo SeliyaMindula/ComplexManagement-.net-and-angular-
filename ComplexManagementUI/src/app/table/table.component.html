@@ -1,0 +1,74 @@
+<div >
+  <div *ngIf="deleteSuccess" class="alert alert-success">
+    {{ deleteMessage }}
+  </div>
+  <div style="display: flex; justify-content: space-between;" class="search-container pb-3 pt-3">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search stores..." class="form-control">
+    <button (click)="searchStores()" class="btn btn-primary">Search</button>
+  </div> 
+  
+
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Lease Agreements </th>
+        <th scope="col">Lease Payments </th>
+        <th scope="col">Maintenance Contracts</th>
+        <th scope="col"></th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let store of (searchResults || displayedItems )" >
+        <td>{{ store.name }}</td>
+        <td>
+            <b>Category Name:</b> {{ store.category.name }}<br>
+            <b>Category Description:</b> {{ store.category.description }}
+        <td>
+          <div *ngFor="let lease of store.leaseAgreements">
+            <b>Start Date:</b> {{ lease.startDate }}<br>
+            <b>End Date:</b> {{ lease.endDate }}<br> 
+            <b>Rent:</b> {{ lease.rent }}<br> 
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let lease of store.leaseAgreements">
+            <div *ngFor="let payment of lease.payments">
+              <b>Payment Amount:</b> {{ payment.amount }}<br>
+              <b>Type:</b> {{payment.type}}
+            </div>
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let contract of store.maintenanceContracts">
+            <b>Provider Name:</b> {{ contract.providerName }}<br>
+            <b>Start Date:</b> {{ contract.startDate }}<br>
+            <b>End Date:</b> {{ contract.endDate }}<br>
+            <b>Cost:</b> {{ contract.cost }}
+          </div>
+        </td>        
+        <td>
+          <div style="display: flex; justify-content: space-between;">
+            <button class="btn btn-primary"(click)="navigateToEdit(store.storeID)">Edit</button>
+            <button class="btn btn-danger" (click)="deleteStore(store.storeID)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-left: 85%;">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" href="#" (click)="setPage(currentPage - 1)">Previous</a>
+      </li>
+      <li class="page-item" [class.active]="currentPage === page" *ngFor="let page of pages">
+        <a class="page-link" href="#" (click)="setPage(page)">{{ page }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === pages.length">
+        <a class="page-link" href="#" (click)="setPage(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,230 @@
+<form class="pb-2" [formGroup]="storeForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex justify-content-center">
+    <h3>Add Store</h3>
+  </div>
+  <h4>Store Details:</h4>
+  <!-- Store Name -->
+  <div class="container pb-3">
+    <label for="name">Store Name</label>
+    <input type="text" class="form-control" id="name" formControlName="name" 
+           [ngClass]="{'is-invalid': storeForm.get('name')?.invalid && storeForm.get('name')?.touched}">
+    <div *ngIf="storeForm.get('name')?.invalid && storeForm.get('name')?.touched" class="invalid-feedback">
+    Store name is required and must be at least 3 characters.
+    </div>
+  </div>
+  
+  <h4>Store Category Details:</h4>
+<div class="container pb-3" formGroupName="category">
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="categoryName">Category Name</label>
+        <input type="text" class="form-control" id="categoryName" formControlName="name" 
+               [ngClass]="{'is-invalid': storeForm.get('category.name')?.invalid && storeForm.get('category.name')?.touched}">
+        <div *ngIf="storeForm.get('category.name')?.invalid && storeForm.get('category.name')?.touched" class="invalid-feedback">
+          Category name is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <label for="categoryDescription">Category Description</label>
+        <input type="text" class="form-control" id="categoryDescription" formControlName="description" 
+               [ngClass]="{'is-invalid': storeForm.get('category.description')?.invalid && storeForm.get('category.description')?.touched}">
+        <div *ngIf="storeForm.get('category.description')?.invalid && storeForm.get('category.description')?.touched" class="invalid-feedback">
+          Category description is required.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <h4>Lease Agreements:</h4>
+<div formArrayName="leaseAgreements">
+  <div *ngFor="let lease of leaseAgreements.controls; let i = index" [formGroupName]="i">
+    <div class="container pb-3">
+      <div class="row">
+        <!-- Start Date -->
+        <div class="col">
+          <div class="form-group">
+            <label for="startDate{{i}}">Start Date</label>
+            <input type="date" class="form-control" id="startDate{{i}}" formControlName="startDate"
+                   [ngClass]="{'is-invalid': lease.get('startDate')?.invalid && lease.get('startDate')?.touched}">
+            <div *ngIf="lease.get('startDate')?.invalid && lease.get('startDate')?.touched" class="invalid-feedback">
+              Start date is required.
+            </div>
+          </div>
+        </div>
+        <!-- End Date -->
+        <div class="col">
+          <div class="form-group">
+            <label for="endDate{{i}}">End Date</label>
+            <input type="date" class="form-control" id="endDate{{i}}" formControlName="endDate"
+              [ngClass]="{'is-invalid': lease.get('endDate')?.invalid && lease.get('endDate')?.touched}">
+            <div *ngIf="lease.get('endDate')?.invalid && lease.get('endDate')?.touched" class="invalid-feedback">
+              End date is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Rent -->
+        <div class="col">
+          <div class="form-group">
+            <label for="rent{{i}}">Rent</label>
+            <input type="number" class="form-control" id="rent{{i}}" formControlName="rent"
+            [ngClass]="{'is-invalid': lease.get('rent')?.invalid && lease.get('rent')?.touched}">
+            <div *ngIf="lease.get('rent')?.invalid && lease.get('rent')?.touched" class="invalid-feedback">
+              Rent is required.
+            </div>
+          </div>
+        </div>
+        <!-- Terms -->
+        <div class="col">
+          <div class="form-group">
+            <label for="terms{{i}}">Terms</label>
+            <input type="text" class="form-control" id="terms{{i}}" formControlName="terms"
+            [ngClass]="{'is-invalid': lease.get('terms')?.invalid && lease.get('terms')?.touched}">
+            <div *ngIf="lease.get('terms')?.invalid && lease.get('terms')?.touched" class="invalid-feedback">
+              Terms is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payments -->
+      <div formArrayName="payments">
+        <div *ngFor="let payment of getPayments(lease).controls; let j = index" [formGroupName]="j">
+          <div class="row">
+            <!-- Payment Date -->
+            <div class="col">
+              <div class="form-group">
+                <label for="paymentDate{{i}}_{{j}}">Payment Date</label>
+                <input type="date" class="form-control" id="paymentDate{{i}}_{{j}}" formControlName="date"
+                       [ngClass]="{'is-invalid': payment.get('date')?.invalid && payment.get('date')?.touched}">
+                <div *ngIf="payment.get('date')?.invalid && payment.get('date')?.touched" class="invalid-feedback">
+                  Payment Date is required.
+                </div>
+              </div>
+            </div>
+            <!-- Payment Amount -->
+            <div class="col">
+              <div class="form-group">
+                <label for="paymentAmount{{i}}_{{j}}">Amount</label>
+                <input type="number" class="form-control" id="paymentAmount{{i}}_{{j}}" formControlName="amount"
+                       [ngClass]="{'is-invalid': payment.get('amount')?.invalid && payment.get('amount')?.touched}">
+                <div *ngIf="payment.get('amount')?.invalid && payment.get('amount')?.touched" class="invalid-feedback">
+                  A valid amount is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="paymentType{{i}}_{{j}}">Type</label>
+                <input type="text" class="form-control" id="paymentType{{i}}_{{j}}" formControlName="type"
+                       [ngClass]="{'is-invalid': payment.get('type')?.invalid && payment.get('type')?.touched}">
+                <div *ngIf="payment.get('type')?.invalid && payment.get('type')?.touched" class="invalid-feedback">
+                  Payment type is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="paymentInvoiceno{{i}}_{{j}}">Invoice No</label>
+                <input type="text" class="form-control" id="paymentInvoiceno{{i}}_{{j}}" formControlName="invoiceNumber"
+                       [ngClass]="{'is-invalid': payment.get('invoiceNumber')?.invalid && payment.get('invoiceNumber')?.touched}">
+                <div *ngIf="payment.get('invoiceNumber')?.invalid && payment.get('invoiceNumber')?.touched" class="invalid-feedback">
+                  Invoice number is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4>Maintenance Contracts:</h4>
+<div formArrayName="maintenanceContracts">
+  <div *ngFor="let contract of maintenanceContracts.controls; let i = index" [formGroupName]="i">
+    <div class="container pb-3">
+      <div class="row">
+        <!-- Provider Name -->
+        <div class="col">
+          <div class="form-group">
+            <label for="providerName{{i}}">Provider Name</label>
+            <input type="text" class="form-control" id="providerName{{i}}" formControlName="providerName"
+                   [ngClass]="{'is-invalid': contract.get('providerName')?.invalid && contract.get('providerName')?.touched}">
+            <div *ngIf="contract.get('providerName')?.invalid && contract.get('providerName')?.touched" class="invalid-feedback">
+              Provider name is required.
+            </div>
+          </div>
+        </div>
+        <!-- Start Date -->
+        <div class="col">
+          <div class="form-group">
+            <label for="startDate{{i}}">Start Date</label>
+            <input type="date" class="form-control" id="startDate{{i}}" formControlName="startDate"
+            [ngClass]="{'is-invalid': contract.get('startDate')?.invalid && contract.get('startDate')?.touched}">
+            <div *ngIf="contract.get('startDate')?.invalid && contract.get('startDate')?.touched" class="invalid-feedback">
+              Start date is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- End Date -->
+        <div class="col">
+          <div class="form-group">
+            <label for="endDate{{i}}">End Date</label>
+            <input type="date" class="form-control" id="endDate{{i}}" formControlName="endDate"
+            [ngClass]="{'is-invalid': contract.get('endDate')?.invalid && contract.get('endDate')?.touched}">
+            <div *ngIf="contract.get('endDate')?.invalid && contract.get('endDate')?.touched" class="invalid-feedback">
+              End date is required.
+            </div>
+          </div>
+        </div>
+        <!-- Cost -->
+        <div class="col">
+          <div class="form-group">
+            <label for="cost{{i}}">Cost</label>
+            <input type="number" class="form-control" id="cost{{i}}" formControlName="cost"
+            [ngClass]="{'is-invalid': contract.get('cost')?.invalid && contract.get('cost')?.touched}">
+            <div *ngIf="contract.get('cost')?.invalid && contract.get('cost')?.touched" class="invalid-feedback">
+              Cost is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Details -->
+      <div class="form-group">
+        <label for="details{{i}}">Details</label>
+        <textarea class="form-control" id="details{{i}}" formControlName="details"
+          [ngClass]="{'is-invalid': contract.get('details')?.invalid && contract.get('details')?.touched}">
+          <div *ngIf="contract.get('details')?.invalid && contract.get('details')?.touched" class="invalid-feedback">
+            Details is required.
+          </div>
+        </textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Submit Button -->
+  
+<div *ngIf="errorMessage" class="alert alert-danger mt-3">
+  {{ errorMessage }}
+</div>
+<div *ngIf="successMessage" class="alert alert-success mt-3">
+  {{ successMessage }}
+</div>
+<div class="d-flex justify-content-center">
+  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+</form>

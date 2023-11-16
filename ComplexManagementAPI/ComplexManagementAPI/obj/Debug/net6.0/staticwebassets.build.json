@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "HoLCwNR98dilYRgww9413IEubvu32HXNQmcGKBzpNFw=",
+  "Source": "ComplexManagementAPI",
+  "BasePath": "_content/ComplexManagementAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
